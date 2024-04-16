@@ -1,39 +1,34 @@
-/*
- * Ostermann's shell header file
- */
+#ifndef TREE_NODE_H
+#define TREE_NODE_H
 
+#include <string>
+#include <vector>
 
-#define MAX_ARGS 500
+class TreeNode {
+public:
+    TreeNode(const std::string& name, int weight)
+        : name(name), weight(weight) {}
 
+    void addChild(TreeNode* child) {
+        children.push_back(child);
+    }
 
-/* This is the definition of a command */
-struct command {
-    char *command;
-    int argc;
-    char *argv[MAX_ARGS];
-    char *infile;
-    char *outfile;
-    char *errfile;
+    std::string getName() const {
+        return name;
+    }
 
-    int error_check; //added to allow to not print whole section just error
-    int env_var;
+    int getWeight() const {
+        return weight;
+    }
 
-    char output_append;		/* boolean: append stdout? */
-    char error_append;		/* boolean: append stderr? */
+    const std::vector<TreeNode*>& getChildren() const {
+        return children;
+    }
 
-    struct command *next;
+private:
+    std::string name;
+    int weight;
+    std::vector<TreeNode*> children;
 };
 
-
-/* externals */
-extern int yydebug;
-extern int debug;
-extern int lines;  // defined and updated by parser, used by bash.cc
-
-
-/* you should use THIS routine instead of malloc */
-void *MallocZ(int numbytes);
-
-/* global routine decls */
-void doline(struct command *pcmd);
-int yyparse(void);
+#endif // TREE_NODE_H
