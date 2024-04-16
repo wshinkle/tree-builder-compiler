@@ -5,16 +5,16 @@
 #include "tree_node.h"
 extern int yylex();
 extern int yyparse();
-
 extern FILE* yyin;
 void yyerror(const char* s);
-extern ParseTree tree;
+ParseTree tree;
+#define YYDEBUG 1
 %}
 
 %union {
     char* string;
     int integer;
-    TreeNode* node;
+    class TreeNode* node;
 }
 
 %type <string> name isachildof
@@ -26,18 +26,22 @@ extern ParseTree tree;
 
 %%
 
-program:
-    | program statement
+statements:
+    | statements statement
+    {}
     ;
+
 
 statement:
     buildnode_statement
+    //{printf("Statement\n");}
     | for_statement
     ;
 
 buildnode_statement:
     BUILDNODE LBRACE node RBRACE SEMICOLON
-    {
+    {   
+        //printf("Build Node\n");
         tree.addNode($3);
 
     }
@@ -45,22 +49,39 @@ buildnode_statement:
 
 node:
     name weight
-    {$$ = new TreeNode($1, $2);}
+    {
+        $$ = new TreeNode($1, $2);
+        printf("Root Node -> Name: %s Weight: %d \n", $1, $2);
+    
+    }
     | name weight isachildof
-    {$$ = new TreeNode($1, $2, $3);}
+    {
+        $$ = new TreeNode($1, $2, $3);
+        printf("Child Node -> Name: %s Weight: %d Child Of: %s\n", $1, $2, $3);
+        
+    }
     ;
 
 name:
     NAME EQUALS STRING SEMICOLON
-    {$$ = $3;}
+    {   
+        $$ = $3;
+        //printf("Name: %s\n", $3);
+    }
     ;
 weight:
     WEIGHT EQUALS INTEGER SEMICOLON
-    {$$ = $3;}
+    {
+        $$ = $3;
+        //printf("Weight: %d\n", $3);
+    }
     ;
 isachildof:
-    ISACHILDOF STRING SEMICOLON
-    {$$ = $2;}
+    ISACHILDOF EQUALS STRING SEMICOLON
+    {
+        $$ = $3;
+        //printf("Is a child of: %s\n", $3);
+    }
     ;
 
 
@@ -73,32 +94,33 @@ for_statement:
     ;
 
 
-statements:
-    | statements statement
-    ;
+
 
 %%
-#include "tree_node.h"
 void yyerror(const char* s) {
     fprintf(stderr, "Parse error: %s\n", s);
     exit(1);
 }
 
+
 int main(int argc, const char * argv[]) {
+    yydebug = 0;
     if (argc > 1) {
         FILE *file = fopen(argv[1], "r");
         if (!file) {
             fprintf(stderr, "Cannot open file: %s\n", argv[1]);
             return 1;
         }
+        printf("Parsing file: %s\n", argv[1]);
         yyin = file;
+        
     }
 
     yyparse();
-
+    tree.printTree();
+    tree.printNodes();
     if (yyin != stdin) {
         fclose(yyin);
     }
-    tree.printTree();
     return 0;
 }
