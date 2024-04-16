@@ -3,6 +3,7 @@
 
 #include "tree_node.h"
 #include <map>
+#include <iostream>
 
 class ParseTree {
 public:
