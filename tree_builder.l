@@ -3,6 +3,8 @@
 #include <stdlib.h>
 %}
 
+%option nounput
+
 %%
 
 "buildnode"    { return BUILDNODE; }
@@ -21,12 +23,11 @@
 "isachildof"   { return ISACHILDOF; }
 [a-zA-Z_][a-zA-Z0-9_]* { yylval.string = strdup(yytext); return IDENTIFIER; }
 [0-9]+         { yylval.string = strdup(yytext); return INTEGER; }
-\"[^"]*\"      { yylval.string = strdup(yytext + 1, yyleng - 2); return STRING; }
+\"[^"]*\"      { yylval.string = strndup(yytext + 1, yyleng - 2); return STRING; }\
 [ \t\n]        { /* ignore whitespace */ }
-.              { yyerror("Unknown character: %s", yytext); }
+.              { return ERROR;}
 
 %%
-
 int yywrap() {
-    return 1;
+   return 1;
 }
