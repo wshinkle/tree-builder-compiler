@@ -11,7 +11,7 @@ PROGRAM = builder
 ALLCFILES  = ${wildcard *.c}
 CFILES  = ${filter-out parser.tab.c lex.yy.c ,${ALLCFILES}}
 CCFILES = ${wildcard *.cc}
-HFILES = builder.h 
+HFILES = parse_tree.h tree_node.h 
 
 
 ##################################################
