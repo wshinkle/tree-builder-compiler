@@ -8,7 +8,7 @@ using namespace std;
 
 class TreeNode {
 public:
-    TreeNode(const string& name, int weight)
+    TreeNode(const string& name, int weight, const string& parentName = "")
         : name(name), weight(weight) {}
 
     void addChild(TreeNode* child) {
@@ -23,12 +23,16 @@ public:
         return weight;
     }
 
+    string getParentName() const {
+        return parentName;
+    }
     const vector<TreeNode*>& getChildren() const {
         return children;
     }
 
 private:
     string name;
+    string parentName;
     int weight;
     vector<TreeNode*> children;
 };

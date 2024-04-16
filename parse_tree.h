@@ -11,15 +11,14 @@ class ParseTree {
 public:
     ParseTree() : root(nullptr) {}
 
-    void addNode(const string& name, int weight, const string& parentName) {
-        TreeNode* node = new TreeNode(name, weight);
-        if (parentName.empty()) {
+    void addNode(TreeNode* node) {
+        if (node->getParentName().empty()) {
             root = node;
         } else {
-            TreeNode* parent = nodes[parentName];
+            TreeNode* parent = nodes[node->getParentName()];
             parent->addChild(node);
         }
-        nodes[name] = node;
+        nodes[node->getName()] = node;
     }
 
     void printTree() const {
