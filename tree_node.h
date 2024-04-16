@@ -4,16 +4,18 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class TreeNode {
 public:
-    TreeNode(const std::string& name, int weight)
+    TreeNode(const string& name, int weight)
         : name(name), weight(weight) {}
 
     void addChild(TreeNode* child) {
         children.push_back(child);
     }
 
-    std::string getName() const {
+    string getName() const {
         return name;
     }
 
@@ -21,14 +23,14 @@ public:
         return weight;
     }
 
-    const std::vector<TreeNode*>& getChildren() const {
+    const vector<TreeNode*>& getChildren() const {
         return children;
     }
 
 private:
-    std::string name;
+    string name;
     int weight;
-    std::vector<TreeNode*> children;
+    vector<TreeNode*> children;
 };
 
 #endif // TREE_NODE_H

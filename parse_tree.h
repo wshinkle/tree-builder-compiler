@@ -5,11 +5,13 @@
 #include <map>
 #include <iostream>
 
+using namespace std;
+
 class ParseTree {
 public:
     ParseTree() : root(nullptr) {}
 
-    void addNode(const std::string& name, int weight, const std::string& parentName) {
+    void addNode(const string& name, int weight, const string& parentName) {
         TreeNode* node = new TreeNode(name, weight);
         if (parentName.empty()) {
             root = node;
@@ -21,21 +23,25 @@ public:
     }
 
     void printTree() const {
-        printTree(root, 0);
+        printTree(root);
+        cout << endl;
     }
 
 private:
     TreeNode* root;
-    std::map<std::string, TreeNode*> nodes;
+    map<string, TreeNode*> nodes;
 
-    void printTree(const TreeNode* node, int depth) const {
-        for (int i = 0; i < depth; ++i) {
-            std::cout << "  ";
+    //this prints in the correct format and should be done
+    void printTree(const TreeNode* node) const {
+        if (node == nullptr) {
+            return;
         }
-        std::cout << node->getName() << " (" << node->getWeight() << ")\n";
+        cout << "(<" << node->getName() << "," << node->getWeight() << ">";
         for (const TreeNode* child : node->getChildren()) {
-            printTree(child, depth + 1);
+            cout << ",";
+            printTree(child);
         }
+        cout << ")";
     }
 };
 
