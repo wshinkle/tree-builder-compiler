@@ -46,6 +46,7 @@ buildnode_statement:
     {   
         //printf("Build Node\n");
         tree.addNode($3);
+        tree.printTree();
 
     }
     ;
