@@ -18,9 +18,13 @@ for file in "$directory"/*; do
         if [[ "$extension" == "tb" ]]; then
             # Run the 'tree_builder' program with the filename as an argument and redirect the output to the output file
             ./tree_builder "$file" &> "$output_file"
+
+
+            new_extension=".out"
+            test_output_file="$directory"/"$(basename "$file" .tb)""$new_extension"
             
             # compare original and output files
-            diff "$file" "$output_file" > /dev/null
+            diff "$test_output_file" "$output_file" > /dev/null
             if [ $? -eq 0 ]; then
                 echo "Test passed"
             else
