@@ -88,9 +88,15 @@ isachildof:
 
 for_statement:
     FOR IDENTIFIER IN LBRACKET INTEGER COLON INTEGER RBRACKET LBRACE statements RBRACE SEMICOLON
-    {
+    {   
+        string var = $2;
 
+        for (int i = $5; i <= $7; i++) {
+            // Execute the statements in $8
+            printf("For loop: %d\n", i);
+        }
     }
+    
     ;
 
 

@@ -35,6 +35,10 @@ run: $(EXE)
 
 # Clean
 clean:
-	rm -f $(OBJ) $(EXE) y.tab.c y.tab.h lex.yy.c
+	rm -f $(OBJ) $(EXE) y.tab.c y.tab.h lex.yy.c Examples/*.output
+
+test: $(EXE)
+	./test.sh
+
 
 .PHONY: all run clean
