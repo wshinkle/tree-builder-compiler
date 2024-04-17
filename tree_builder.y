@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parse_tree.h"
 #include "tree_node.h"
 extern int yylex();
@@ -15,11 +16,13 @@ ParseTree tree;
     char* string;
     int integer;
     class TreeNode* node;
+    class Expr* expr;
 }
 
 %type <string> name isachildof
 %type <integer> weight
 %type <node> node
+%type <expr> expr
 %token <string> IDENTIFIER STRING
 %token <integer> INTEGER
 %token BUILDNODE FOR IN LBRACKET RBRACKET LBRACE RBRACE SEMICOLON COLON EQUALS PLUS NAME WEIGHT ISACHILDOF ERROR
@@ -61,19 +64,35 @@ node:
         
     }
     ;
-
-name:
-    NAME EQUALS STRING SEMICOLON
-    {   
-        $$ = $3;
-        //printf("Name: %s\n", $3);
+expr:
+    STRING
+    {
+        $$ = new StringExpr($1);
+    }
+    | expr PLUS expr
+    {
+        $$ = new ConcatExpr($1, $3);
+    }
+    | INTEGER
+    {
+        $$ = new IntExpr($1);
     }
     ;
+
+name:
+    NAME EQUALS expr SEMICOLON
+    {   
+        string temp = $3->eval();
+        $$ = strdup(temp.c_str());
+        
+    }
+    ;
+
 weight:
-    WEIGHT EQUALS INTEGER SEMICOLON
+    WEIGHT EQUALS expr SEMICOLON
     {
-        $$ = $3;
-        //printf("Weight: %d\n", $3);
+        string temp = $3->eval();
+        $$ = stoi(temp.c_str());
     }
     ;
 isachildof:
@@ -87,9 +106,11 @@ isachildof:
 
 
 for_statement:
-    FOR IDENTIFIER IN LBRACKET INTEGER COLON INTEGER RBRACKET LBRACE statements RBRACE SEMICOLON
+    FOR IDENTIFIER IN LBRACKET INTEGER COLON INTEGER RBRACKET LBRACE statements RBRACE
     {   
         string var = $2;
+
+        printf("Made it to the for loop\n");
 
         for (int i = $5; i <= $7; i++) {
             // Execute the statements in $8
