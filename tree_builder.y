@@ -46,8 +46,6 @@ buildnode_statement:
     {   
         //printf("Build Node\n");
         tree.addNode($3);
-        tree.printTree();
-
     }
     ;
 
@@ -55,13 +53,13 @@ node:
     name weight
     {
         $$ = new TreeNode($1, $2);
-        printf("Root Node -> Name: %s Weight: %d \n", $1, $2);
+        //printf("Root Node -> Name: %s Weight: %d \n", $1, $2);
     
     }
     | name weight isachildof
     {
         $$ = new TreeNode($1, $2, $3);
-        printf("Child Node -> Name: %s Weight: %d Child Of: %s\n", $1, $2, $3);
+        //printf("Child Node -> Name: %s Weight: %d Child Of: %s\n", $1, $2, $3);
         
     }
     ;
@@ -111,11 +109,11 @@ for_statement:
     {   
         string var = $2;
 
-        printf("Made it to the for loop\n");
+        //printf("Made it to the for loop\n");
 
         for (int i = $5; i <= $7; i++) {
-            // Execute the statements in $8
-            printf("For loop: %d\n", i);
+            // Execute the statements in $10?
+            //printf("For loop: %d\n", i);
         }
     }
     
@@ -139,14 +137,13 @@ int main(int argc, const char * argv[]) {
             fprintf(stderr, "Cannot open file: %s\n", argv[1]);
             return 1;
         }
-        printf("Parsing file: %s\n", argv[1]);
+        //printf("Parsing file: %s\n", argv[1]);
         yyin = file;
         
     }
 
     yyparse();
-    tree.printTree();
-    tree.printNodes();
+    tree.printTree(tree.getRoot(), true);
     if (yyin != stdin) {
         fclose(yyin);
     }

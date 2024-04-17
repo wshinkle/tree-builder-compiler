@@ -11,44 +11,57 @@ class ParseTree {
 public:
     ParseTree() : root(nullptr) {}
 
+    TreeNode* getRoot() const {return root;}
+    
     void addNode(TreeNode* node) {
-        printf("Adding node %s\n", node->getName().c_str());
-        if (node->getParentName().empty()) {
+        if (root == nullptr) {
             root = node;
-        } else {
-            TreeNode* parent = nodes[node->getParentName()];
-            parent->addChild(node);
+        } 
+        if (node->getParentName() != "") {
+            TreeNode* parent = findNode(node->getParentName());
+            if (parent != nullptr) {
+                parent->addChild(node);
+            }
         }
-        nodes[node->getName()] = node;
-        nodes2.push_back(node);
+        nodes.push_back(node);
     }
 
-    void printTree() const {
-        printTree(root);
-        cout << endl;
-    }
-    void printNodes() const {
-        for (const auto& node : nodes2) {
-            cout << node->getName() << " ";
+    TreeNode* findNode(const string& name) const {
+        for (const auto& node : nodes) {
+            if (node->getName() == name) {
+                return node;
+            }
         }
-        cout << endl;
+        return nullptr;
     }
-private:
-    TreeNode* root;
-    map<string, TreeNode*> nodes;
-    vector<TreeNode*> nodes2;
-    //this prints in the correct format and should be done
-    void printTree(const TreeNode* node) const {
+
+    void printTree(const TreeNode* node = nullptr, bool isRoot = true) const {
         if (node == nullptr) {
-            return;
+            node = root;
         }
         cout << "(<" << node->getName() << "," << node->getWeight() << ">";
-        for (const TreeNode* child : node->getChildren()) {
+        const auto& children = node->getChildren();
+        for (int i = children.size() - 1; i >= 0; i--) {
             cout << ",";
-            printTree(child);
+            printTree(children[i], false);
         }
         cout << ")";
+        if (isRoot) {
+            cout << endl;
+        }
     }
-};
 
+    void printNodes() const {
+        for (const auto& node : nodes) {
+            cout << "Name: " << node->getName() << " "
+            << "Parent: " << node->getParentName() << endl;
+            
+        }
+        cout << endl;
+    }
+
+private:
+    TreeNode* root;
+    vector<TreeNode*> nodes;
+};
 #endif // PARSE_TREE_H

@@ -9,14 +9,18 @@ using namespace std;
 
 class TreeNode {
 public:
-    TreeNode(const string& name, int weight, const string& parentName = "")
-        : name(name), weight(weight) {}
+    TreeNode(const string& name, int weight, const string& parentName = "") {
+        this->name = name;
+        this->weight = weight;
+        this->parentName = parentName;
+    }
 
     void addChild(TreeNode* child) {children.push_back(child);}
 
     string getName() const {return name;}
     int getWeight() const {return weight;}
     string getParentName() const {return parentName;}
+    void setParentName(string str) {parentName = str;}
     const vector<TreeNode*>& getChildren() const {return children;}
 
     virtual void execute() {}
