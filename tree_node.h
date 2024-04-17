@@ -18,12 +18,40 @@ public:
     string getParentName() const {return parentName;}
     const vector<TreeNode*>& getChildren() const {return children;}
 
+    virtual void execute() {}
 private:
     string name;
     string parentName;
     int weight;
     vector<TreeNode*> children;
 };
+
+class ForLoopNode : public TreeNode {
+public:
+    ForLoopNode(const std::string& var, int start, int end, const std::vector<TreeNode*>& statements)
+        : TreeNode("", 0), var(var), start(start), end(end), statements(statements) {}
+
+    virtual void execute() {
+        for (int i = start; i <= end; i++) {
+            // Set the value of the loop variable
+            variables[var] = i;
+
+            // Execute each statement in the loop
+            for (TreeNode* statement : statements) {
+                // Assuming each TreeNode has an execute method
+                statement->execute();
+            }
+        }
+    }
+
+private:
+    std::string var;
+    int start;
+    int end;
+    std::map<std::string, int> variables;
+    std::vector<TreeNode*> statements;
+};
+
 
 class Expr {
 public:
