@@ -21,8 +21,13 @@
 "name"         { return NAME; }
 "weight"       { return WEIGHT; }
 "isachildof"   { return ISACHILDOF; }
-[a-zA-Z_][a-zA-Z0-9_]* { yylval.string = strdup(yytext); return IDENTIFIER; }
-[0-9]+         { yylval.integer = atoi(yytext); return INTEGER; }
+","            { return COMMA; }
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.string = strdup(yytext);
+                         //printf("identifier: %s\n", yylval.string);
+                         return IDENTIFIER; }
+[0-9]+         { yylval.integer = atoi(yytext); 
+                  //printf("integer: %d\n", yylval.integer);
+                  return INTEGER; }
 \"[^"]*\"      { yylval.string = strndup(yytext + 1, yyleng - 2); return STRING; }\
 [ \t\n]        { /* ignore whitespace */ }
 .              { return ERROR;}

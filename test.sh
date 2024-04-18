@@ -26,9 +26,9 @@ for file in "$directory"/*; do
             # compare original and output files
             diff "$test_output_file" "$output_file" > /dev/null
             if [ $? -eq 0 ]; then
-                echo "Test passed"
+                echo "Test passed for $file"
             else
-                echo "Test failed"
+                echo "Test failed for $file"
             fi
         fi
     fi

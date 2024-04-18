@@ -3,7 +3,7 @@ YACC = yacc
 YFLAGS = -d
 LEX = lex
 CXX = g++
-CXXFLAGS = -Wall -std=c++11
+CXXFLAGS = -Wall -std=c++11 -g
 YACC_SRC = tree_builder.y
 LEX_SRC = tree_builder.l
 CPP_SRC = $(wildcard *.cpp)
