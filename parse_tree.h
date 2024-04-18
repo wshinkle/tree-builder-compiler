@@ -1,3 +1,10 @@
+/*
+Authors: Wyatt Shinkle and Zach Naymik
+Date: 4/18/2024
+Description: Header file that contains decsriptions for the parse tree and the nodes that make up the parse tree. Also contains definitions for the expression and statement classes that are used to evaluate the parse tree.
+*/
+
+
 #ifndef PARSE_TREE_H
 #define PARSE_TREE_H
 
@@ -205,7 +212,7 @@ class int_variable : public int_expression
 {
 public:
   int_variable(string in_val)
-  { // cout << "Found variable = " << in_val << endl;
+  { 
     saved_val = in_val;
   }
 
@@ -214,11 +221,8 @@ public:
 
     map<string, string>::iterator p;
     p = sym_tab.find(saved_val);
-    // cout << "Looking up variable " << saved_val << endl;
     if (p != sym_tab.end())
     {
-      // cout << "Returning value of variable " << saved_val << endl;
-      // cout << "= " << p->second << endl;
 
       return stoi(p->second);
     }
@@ -271,7 +275,6 @@ class statement
 {
 public:
   virtual void evaluate_statement(map<string, string> &sym_tab, ParseTree &tree) = 0;
-  // virtual void evaluate_statement_for(map<string, int> &sym_tab, ParseTree &tree, string var) =0;
 };
 
 class compound_statement : public statement
@@ -294,14 +297,6 @@ public:
       r->evaluate_statement(sym_tab, tree);
     }
   }
-  // virtual void evaluate_statement_for(map<string, int> &sym_tab, ParseTree &tree, string var) {
-  //   if (f!=NULL) {
-  //     f->evaluate_statement_for(sym_tab, tree, var);
-  //   }
-  //   if (r!=NULL) {
-  //     r->evaluate_statement_for(sym_tab, tree, var);
-  //   }
-  // }
 private:
   compound_statement *r;
   statement *f;
@@ -327,9 +322,7 @@ public:
     }
     sym_tab.erase(var);
   }
-  // virtual void evaluate_statement_for(map<string, int> &sym_tab, ParseTree &tree, int var) {
-  //   return;
-  // }
+
 private:
   string var;
   int start;
@@ -391,10 +384,7 @@ public:
       tree.addNode(node);
     }
   }
-  // virtual void evaluate_statement_for(map<string, int> &sym_tab, ParseTree &tree, int var) {
-  //   TreeNode *node = new TreeNode(name->eval(), weight->eval(), parentName->eval());
-  //   tree.addNode(node);
-  // }
+
 private:
   expression *name;
   int_expression *weight;

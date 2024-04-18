@@ -1,3 +1,10 @@
+/*
+Authors: Wyatt Shinkle and Zach Naymik
+Date: 4/18/2024
+Description: This is the parser for the build language. It will take in a file and parse it into a parse tree. 
+*/
+
+
 %{
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,10 @@
+/*
+Authors: Wyatt Shinkle and Zach Naymik
+Date: 4/18/2024
+Description: This file contains the lex file for the parser. It defines the tokens that the parser will use to parse the input file.
+*/
+
+
 %{
 #include "y.tab.h"
 #include <stdlib.h>

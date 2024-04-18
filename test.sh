@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Shell script used to test based on example files
+
 # Directory to iterate through
 directory="Examples"
 
